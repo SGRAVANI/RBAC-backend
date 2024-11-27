@@ -14,7 +14,7 @@ import fileupload from "express-fileupload"
 import bodyParser from "body-parser";
 let app=express()
 dotenv.config()
-app.use(cors( {origin: "https://rbac-frontend-shakuntla.vercel.app/", // Your React app's URL
+app.use(cors( {origin:'https://rbac-frontend-shakuntla.vercel.app',
     credentials: true}))
 app.use(express.json({ limit: "10mb" }))
 app.use(cookieParser())

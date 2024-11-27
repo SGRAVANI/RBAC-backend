@@ -18,28 +18,6 @@ const generateToken=async function(id,user)
     }
 
 }
-// async function getUser(token)
-// {   try{
-    
-//     if(!token)
-// {
-//     return null
-// }
-//     let data=jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)
-//     let userData=await user.findById(data._id)
-//     if(userData)
-//     {
-//         return userData
-//     }
-//     else{
-//         return null
-//     }
-// }
-// catch(e)
-// {
-//     return null
-// }
-// }
 const checkErrors= async (req, res, next) => {
             const errors = validationResult(req);
             
@@ -91,11 +69,14 @@ authRoute.post(
                 return res.status(403).json({message:"Oops, Your Account is blocked, contact admin@rbac.com for futher inquiry!!!",status:400})
             }
             const cookieOptions = {
-                httpOnly: true,
-            secure: true, // Set to true if using HTTPS
-            path: '/',
-            sameSite: 'strict' ,
-            maxAge: 15 * 24 * 60 * 60 * 1000
+                httpOnly: true,        // Ensure cookies are not accessible via JavaScript
+                secure: true,          // Required for HTTPS (Vercel enforces HTTPS)
+                sameSite: 'none',      // Allow cross-origin cookies
+                path: '/',             // Ensure cookies are accessible across the app
+                maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
+
+
+               
               // expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000)  // 15 days from now
             };
             
@@ -123,98 +104,6 @@ authRoute.post(
        }
    }
 );
-
-
-
-// authRoute.post(
-//     "/login",
-//     [
-//         body('username')
-//             .trim()
-//             .isEmail()
-//             .withMessage('email should be a valid email address')
-//             .normalizeEmail()
-//             .toLowerCase(),
-//         body('password')
-//             .trim()
-//             .isLength({ min: 8 })
-//             .withMessage("Minimum 8 characters are required for password")
-//     ],
-//     async (req, res, next) => {
-//         const errors = validationResult(req);
-//         if (!errors.isEmpty()) {
-//             return res.status(400).json({
-//                 message: "Validation failed",
-//                 status: 400,
-//                 errors: errors.array(),
-//             });
-//         }
-
-//         passport.authenticate('local', (err, user, info) => {
-//             if (err) return next(err);
-//             if (!user) {
-//                 return res.status(400).json({
-//                     message: info?.message || "Invalid credentials",
-//                     status: 400,
-//                 });
-//             }
-
-//             req.login(user, (err) => {
-//                 if (err) return next(err);
-//                 console.log(req.user);
-//                 res.cookie(token,generateToken())    
-//                 res.status(200).json({ message: "Login successful", user });
-//                // res.redirect("/user/profile")
-//             });
-//         })(req, res, next);
-//     }
-// );
-
-
-
-
-
-
-
-// authRoute.post(
-//     "/login",
-//     [
-//         body('username')
-//             .trim()
-//             .isEmail()
-//             .withMessage('email should be a valid email address')
-//             .normalizeEmail()
-//             .toLowerCase(),
-//         body('password')
-//             .trim()
-//             .isLength({ min: 8 })
-//             .withMessage("Minimum 8 characters are required for password")
-//     ],
-//     async (req, res, next) => {
-//         const errors = validationResult(req);
-//         if (!errors.isEmpty()) {
-//                 errors.array().forEach(er=>{
-//         res.status(400).json({message:er.msg,status:400})
-//     })
-//     return
-
-//         }
-
-//         passport.authenticate('local', (err, user, info) => {
-//             if (err) return next(err);
-//             if (!user) {
-//                 //console.log(info.message)
-//                  res.status(400).json({ message: info.message || "Invalid credentials",status:400 });
-                 
-//             }
-//             req.login(user, (err) => {
-//                 if (err) return next(err);
-//                 console.log(req.user)
-//                 res.status(200).json({ message: "Login successful", user });
-//             });
-//         })(req, res, next);
-//     }
-// );
 
 authRoute.post("/register",[
     body('username')

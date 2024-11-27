@@ -278,7 +278,7 @@ authRoute.get("/logout", async (req, res, next) => {
             httpOnly: true,  // Ensure this matches the cookie settings
             secure:true,  // Use secure cookies in production
             path: '/',  // Same path as the one used when setting the cookie
-            sameSite: 'strict',  // Ensure sameSite is set the same way
+            sameSite: 'none',  // Ensure sameSite is set the same way
          //   expires: new Date(0),  // Set expiration to a date in the past
         };
        //console.log(req.cookies.authToken)
